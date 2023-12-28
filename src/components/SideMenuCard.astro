@@ -1,0 +1,23 @@
+---
+import { Playlist } from "@/lib/data";
+
+interface Props {
+    playlist: Playlist,
+}
+
+const { playlist } = Astro.props;
+---
+
+<a href=`playilist/${playlist.id}` class="playlist-item relative overflow-hidden">
+    <div class="flex p-2 items-center gap-5 rounded-md hover:bg-stone-700">
+        
+        <picture class="h-12 w-12 flex-none">
+            <img src={playlist.cover} alt=`${playlist.title} cover`>
+        </picture>
+
+        <div class="flex flex-auto flex-col truncate">
+
+        </div>
+
+    </div>
+</a>
