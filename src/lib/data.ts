@@ -1,4 +1,4 @@
-import { colors } from "@/lib/colors.d";
+import { colors } from "@/lib/colors";
 
 export interface Playlist {
   id: string;
