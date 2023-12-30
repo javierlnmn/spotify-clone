@@ -8,17 +8,22 @@ import { playlists } from '@/lib/data';
 
 <Layout title="Sfrutify">
 
-    <div id="playlist-container" class="relative transition-all duration-1000 bg-green-600">
+    <div id="playlist-container" class="relative transition-all duration-100">
 
         <!-- <PageHeader /> -->
 
-        <div class="relative z-10 px-6">
+        <div class="relative z-10 p-6">
 
-            <h3>Buenos días</h3>
+            <h3 class="font-bold text-4xl">Good Morning</h3>
 
-            { playlists.map(playlist => <PlaylistItemCard playlist={playlist} />) }
+            <div class="flex flex-wrap my-5 gap-4">
+                { playlists.map(playlist => <PlaylistItemCard playlist={playlist} />) }
+            </div>
+
 
         </div>
+
+        <div class="absolute inset-0 bg-gradient-to-t from-neutral-900/10 via-neutral-800/30 to-green-600"></div>
     </div>
 
 </Layout>

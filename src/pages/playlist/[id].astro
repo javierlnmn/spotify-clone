@@ -1,0 +1,34 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+import { allPlaylists, songs } from '../../lib/data';
+
+const { id } = Astro.params; 
+
+const playlist = allPlaylists.find(playlist => playlist.id === id);
+const playlistSongs = songs.filter(song => song.albumId === playlist?.albumId)
+---
+
+<Layout title="Sfrutify">
+
+    <div
+        id="playlist-container"
+        class="relative flex flex-col h-full overflow-x-hidden p-6"
+        transition:name=`playlist ${id} box`
+    >
+
+        <header class="relative z-20 flex items-center">
+            <picture class="rounded-md overflow-hidden aspect-square w-52 h-52 flex-none">
+                <img
+                    class="w-full h-full object-cover"
+                    src={playlist?.cover}
+                    alt=`${playlist?.title} cover`
+                    transition:name=`playlist ${id} image`
+                >
+            </picture>
+        </header>
+
+        <div class="absolute inset-0 bg-gradient-to-t from-neutral-900/10 via-neutral-800/30 to-neutral-700"></div>
+    </div>
+
+</Layout>
