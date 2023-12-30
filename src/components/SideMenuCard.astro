@@ -6,17 +6,20 @@ interface Props {
 }
 
 const { playlist } = Astro.props;
+
+const artistsString = playlist.artists.join(', ');
 ---
 
 <a href=`playilist/${playlist.id}` class="playlist-item relative overflow-hidden">
-    <div class="flex p-2 items-center gap-5 rounded-md hover:bg-stone-700">
+    <div class="flex p-2 items-center gap-4 rounded-md hover:bg-neutral-700">
         
         <picture class="h-12 w-12 flex-none">
             <img src={playlist.cover} alt=`${playlist.title} cover`>
         </picture>
 
         <div class="flex flex-auto flex-col truncate">
-
+            <h4 class="text-semibold">{playlist.title}</h4>
+            <span class="text-sm text-neutral-500">{artistsString}</span>
         </div>
 
     </div>
