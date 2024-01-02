@@ -12,7 +12,7 @@ const artistsString = artists.join(', ');
 
 <a
     transition:name=`playlist ${id} box`
-    href=`playlist/${id}`
+    href=`/playlist/${id}`
     class="playlist-item rounded-md transition-all duration-300 overflow-hidden gap-5
             shadow-md hover:shadow-xl w-44 p-2 bg-opacity-25 bg-neutral-800 hover:bg-neutral-600 hover:bg-opacity-25
             flex items-start flex-col"
@@ -26,7 +26,7 @@ const artistsString = artists.join(', ');
     </picture>
 
     <div class="flex flex-auto flex-col truncate">
-        <h4 class="text-semibold">{title}</h4>
+        <h4 transition:name=`playlist ${id} title` class="text-semibold">{title}</h4>
         <span class="text-sm text-neutral-500">{artistsString}</span>
     </div>
 </a>
