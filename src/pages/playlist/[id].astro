@@ -6,8 +6,21 @@ import { allPlaylists, songs } from '../../lib/data';
 const { id } = Astro.params; 
 
 const playlist = allPlaylists.find(playlist => playlist.id === id);
-const playlistSongs = songs.filter(song => song.albumId === playlist?.albumId)
+const playlistSongs = songs.filter(song => song.albumId === playlist?.albumId);
 const artistsString = playlist?.artists.join(', ');
+
+const convertDurationToSeconds = (duration: string): number  => {
+  const [minutes, seconds] = duration.split(':').map(Number);
+  return minutes * 60 + seconds;
+}
+
+const totalDurationInSeconds: number = songs.reduce(
+  (totalSeconds, song) => totalSeconds + convertDurationToSeconds(song.duration),
+  0
+);
+
+const totalHours: number = Math.floor(totalDurationInSeconds / 3600);
+const totalMinutes: number = Math.floor((totalDurationInSeconds % 3600) / 60);
 
 ---
 
@@ -31,7 +44,7 @@ const artistsString = playlist?.artists.join(', ');
             <div class="flex flex-col gap-3 self-end">
                 <h2 transition:name=`playlist ${id} title` class="text-5xl text-clamp font-bold">{playlist?.title}</h2>
                 <p class="font-light">{artistsString}</p>
-                <p>{playlistSongs.length} songs, </p>
+                <p class="font-semibold">{playlistSongs.length} songs, <span class="text-neutral-500 text-sm">about {totalHours}h {totalMinutes}min.</span></p>
             </div>
         </header>
 
