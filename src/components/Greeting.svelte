@@ -2,9 +2,8 @@
     const currentTime = new Date();
     const currentHour = currentTime.getHours();
 
-    console.log('polla');
-
     let greeting = '';
+    
     if (currentHour < 12 ) {
         greeting = 'Good morning!';
     } else if (currentHour < 18 ) {
