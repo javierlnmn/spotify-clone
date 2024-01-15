@@ -22,21 +22,80 @@ const VolumeControl = () => {
 
     const volume = usePlayerStore(state => state.volume);
     const setVolume = usePlayerStore(state => state.setVolume);
+    const previousVolumeRef = useRef(volume);
+
+    const isVolumeSilenced = volume < 0.01;
+
+    const handleClickVolume = () => {
+        if (isVolumeSilenced) {
+            setVolume(previousVolumeRef.current);
+        } else {
+            previousVolumeRef.current = volume;
+            setVolume(0);
+        }
+    }
 
     return (
         <div className="flex items-center justify-center gap-2">
-            { volume < 0.01 ? <VolumeSilence /> : <Volume />}
+            <button onClick={handleClickVolume}>
+                { isVolumeSilenced ? <VolumeSilence /> : <Volume />}
+            </button>
             <Slider 
                 defaultValue={[100]}
                 max={100}
                 min={0}
                 className="w-[95px] bg-green-50"
+                value={[volume*100]}
                 onValueChange={(value) => {
                     const [newVolume] = value;
                     const volumeValue = newVolume / 100;
                     setVolume(volumeValue)
                 }}
             />
+        </div>
+    )
+}
+
+const SongControl = ({ audio }) => {
+    const [currentTime, setCurrentTime] = useState(0);
+
+    useEffect(() => {
+        audio.current.addEventListener('timeupdate', handleTimeUpdate);
+        return () => {
+            audio.current.removeEventListener('timeupdate', handleTimeUpdate);
+        }
+    }, []);
+
+    const handleTimeUpdate = () => {
+        setCurrentTime(audio.current.currentTime);
+    }
+
+    const formatTime = time => {
+        if (time === null) {
+            return '0:00';
+        }
+
+        const seconds = Math.floor(time % 60);
+        const minutes = Math.floor(time / 60);
+
+        return `${minutes} : ${seconds.toString().padStart(2, '0')}`;
+    }
+
+    const duration = audio?.current?.duration ?? 0;
+
+    return (
+        <div className="flex flex-row gap-2 items-center justify-center pt-5">
+            { duration ? <span className="text-xs font-thin w-12 text-right">{formatTime(currentTime)}</span> : '0:00' }
+            <Slider 
+                max={audio?.current?.duration ?? 0}
+                min={0}
+                className="w-[500px] bg-green-50"
+                value={[currentTime]}
+                onValueChange={(value) => {
+                    audio.current.currentTime = value;
+                }}
+            />
+            { duration ? <span className="text-xs font-thin w-12">{formatTime(duration)}</span> : '0:00' }
         </div>
     )
 }
@@ -95,14 +154,11 @@ export function Player() {
             </div>
 
             <div className="grid place-content-center gap-4 flex-1">
-                <div className="flex justify-center ">
+                <div className="flex justify-center flex-col items-center">
                     <button className="bg-white rounded-full p-2" onClick={() => handleClick()}>
-                        { !isPlaying ? 
-                            <Play /> 
-                        :
-                            <Pause />
-                        }
+                        { !isPlaying ? <Play /> : <Pause /> }
                     </button>
+                    <SongControl audio={audioRef} />
                     <audio ref={audioRef} />
                 </div>
             </div>

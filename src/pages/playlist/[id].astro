@@ -1,4 +1,5 @@
 ---
+import SongsTable from '@/components/SongsTable.astro';
 import Layout from '../../layouts/Layout.astro';
 
 import { allPlaylists, songs } from '../../lib/data';
@@ -42,13 +43,14 @@ const totalMinutes: number = Math.floor((totalDurationInSeconds % 3600) / 60);
                 >
             </picture>
             <div class="flex flex-col gap-3 self-end">
-                <h2 transition:name=`playlist ${id} title` class="text-5xl text-clamp font-bold">{playlist?.title}</h2>
+                <h2 transition:name=`playlist ${id} title` class="text-5xl text-clamp font-bold mb-auto">{playlist?.title}</h2>
                 <p class="font-light">{artistsString}</p>
                 <p class="font-semibold">{playlistSongs.length} songs, <span class="text-neutral-500 text-sm">about {totalHours}h {totalMinutes}min.</span></p>
             </div>
         </header>
-
         <div class="absolute -z-10 inset-0 bg-gradient-to-t from-neutral-900/10 via-neutral-800/30 to-neutral-700"></div>
+        <SongsTable songs={playlistSongs} />
+
     </div>
 
 </Layout>
